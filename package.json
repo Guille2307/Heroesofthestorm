@@ -1,0 +1,27 @@
+{
+  "name": "proyectomovies",
+  "version": "1.0.0",
+  "description": "Proyecto Api de Pelis y cines",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "index.js",
+    "dev": "nodemon index.js",
+    "load-heroes": "node ./seeds/hero.seed.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Guillermo Piñate",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cloudinary": "^1.29.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.0",
+    "multer": "^1.4.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
