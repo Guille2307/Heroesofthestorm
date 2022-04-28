@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { DB_URL } from "./utils/db.js";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -20,6 +21,20 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   res.send("Hello");
+});
+// cors
+server.use(
+  cors({
+    origin: ["http://localhost:5500", "http://localhost:4200"],
+    credentials: true,
+  })
+);
+
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
 });
 
 //jwt
