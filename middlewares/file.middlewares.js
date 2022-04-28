@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`);
   },
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../temp"));
+    cb(null, path.join(__dirname, "../images"));
   },
 });
 const VALID_FILE_TYPES = ["image/png", "image/jpg", "image/jpeg"];
