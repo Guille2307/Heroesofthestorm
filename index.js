@@ -22,7 +22,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
   res.send("Hello");
 });
-// cors
+cors;
 server.use(
   cors({
     origin: ["http://localhost:5500", "http://localhost:4200"],
