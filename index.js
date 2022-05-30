@@ -23,16 +23,7 @@ router.get("/", (req, res) => {
   res.send("Hello");
 });
 cors;
-server.use(
-  cors({
-    origin: [
-      "http://localhost:5500",
-      "http://localhost:4200",
-      "https://ornate-cascaron-d6f614.netlify.app/",
-    ],
-    credentials: true,
-  })
-);
+server.use(cors({}));
 
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
