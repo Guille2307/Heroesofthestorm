@@ -25,7 +25,11 @@ router.get("/", (req, res) => {
 cors;
 server.use(
   cors({
-    origin: ["http://localhost:5500", "http://localhost:4200"],
+    origin: [
+      "http://localhost:5500",
+      "http://localhost:4200",
+      "https://ornate-cascaron-d6f614.netlify.app/",
+    ],
     credentials: true,
   })
 );
