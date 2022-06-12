@@ -9,10 +9,12 @@ router.get("/", async (req, res) => {
   try {
     const page = Math.abs(req.query.page);
     const numItems = Math.abs(req.query.numItems);
+    const count = await Hero.count();
     const heroes = await Hero.find()
       .skip(page * numItems)
       .limit(numItems);
-    return res.status(200).json(heroes);
+
+    return res.status(200).json({ count, heroes });
   } catch (err) {
     return res.status(500).json(err);
   }
