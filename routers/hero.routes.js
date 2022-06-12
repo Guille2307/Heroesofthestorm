@@ -7,7 +7,11 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const heroes = await Hero.find();
+    const page = Math.abs(req.query.page);
+    const numItems = Math.abs(req.query.numItems);
+    const heroes = await Hero.find()
+      .skip(page * numItems)
+      .limit(numItems);
     return res.status(200).json(heroes);
   } catch (err) {
     return res.status(500).json(err);
