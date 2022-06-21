@@ -35,7 +35,7 @@ server.use((req, res, next) => {
 //jwt
 server.set("secretKey", process.env.SESSION_SECRET);
 // Middlewares
-server.use(express.json());
+server.use(express.json({ limit: "50mb" }));
 server.use(express.urlencoded({ extended: true }));
 
 server.use(express.static(path.join(__dirname, "public")));
