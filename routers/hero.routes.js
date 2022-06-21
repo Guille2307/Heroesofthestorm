@@ -69,27 +69,22 @@ router.get("/difficulty/:difficulty", async (req, res) => {
   }
 });
 
-router.post(
-  "/",
-  [isAuth, upload.single("image"), uploadToCloudinary],
-  async (req, res, next) => {
-    try {
-      const image = req.file_url || null;
-      const newHero = new Hero({
-        character: req.body.character,
-        role: req.body.role,
-        difficulty: req.body.difficulty,
-        universe: req.body.universe,
-        description: req.body.description,
-        image: image,
-      });
-      const createdHero = await newHero.save();
-      return res.status(201).json(createdHero);
-    } catch (error) {
-      next(error);
-    }
+router.post("/", [isAuth], async (req, res, next) => {
+  try {
+    const newHero = new Hero({
+      character: req.body.character,
+      role: req.body.role,
+      difficulty: req.body.difficulty,
+      universe: req.body.universe,
+      description: req.body.description,
+      image: req.body.image,
+    });
+    const createdHero = await newHero.save();
+    return res.status(201).json(createdHero);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 router.delete("/:id", [isAuth], async (req, res, next) => {
   try {
