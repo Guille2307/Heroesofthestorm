@@ -4,22 +4,6 @@ import { isAuth } from "../authentication/jwt.js";
 import { upload, uploadToCloudinary } from "../middlewares/file.middlewares.js";
 
 const router = express.Router();
-
-router.get("/", async (req, res) => {
-  try {
-    const page = Math.abs(req.query.page);
-    const numItems = Math.abs(req.query.numItems);
-    const count = await Hero.count();
-    const heroes = await Hero.find()
-      .skip(page * numItems)
-      .limit(numItems);
-
-    return res.status(200).json({ count, heroes });
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-});
-
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -36,32 +20,30 @@ router.get("/:id", async (req, res) => {
     return res.status(500).json(err);
   }
 });
-router.get("/character/:character", async (req, res) => {
-  const { character } = req.params;
 
+router.get("/", async (req, res) => {
   try {
-    const characterBycharacter = await Hero.find({ character: character });
-    if (characterBycharacter.length > 0) {
-      return res.status(200).json(characterBycharacter);
-    } else {
-      return res
-        .status(404)
-        .json(`No heroes found by this character: ${character}`);
-    }
+    return fetchHeroes(res, null, req.query.page, req.query.numItems);
   } catch (err) {
     return res.status(500).json(err);
   }
 });
+
+router.get("/character/:character", async (req, res) => {
+  const { character } = req.params;
+
+  try {
+    return fetchHeroes(res, { character }, req.query.page, req.query.numItems);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
 router.get("/role/:role", async (req, res) => {
   const { role } = req.params;
 
   try {
-    const characterByrole = await Hero.find({ role: role });
-    if (characterByrole.length > 0) {
-      return res.status(200).json(characterByrole);
-    } else {
-      return res.status(404).json(`No heroes found by this role: ${role}`);
-    }
+    return fetchHeroes(res, { role }, req.query.page, req.query.numItems);
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -71,14 +53,7 @@ router.get("/universe/:universe", async (req, res) => {
   const { universe } = req.params;
 
   try {
-    const characterByuniverse = await Hero.find({ universe: universe });
-    if (characterByuniverse.length > 0) {
-      return res.status(200).json(characterByuniverse);
-    } else {
-      return res
-        .status(404)
-        .json(`No heroes found by this universe: ${universe}`);
-    }
+    return fetchHeroes(res, { universe }, req.query.page, req.query.numItems);
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -88,14 +63,7 @@ router.get("/difficulty/:difficulty", async (req, res) => {
   const { difficulty } = req.params;
 
   try {
-    const characterBydifficulty = await Hero.find({ difficulty: difficulty });
-    if (characterBydifficulty.length > 0) {
-      return res.status(200).json(characterBydifficulty);
-    } else {
-      return res
-        .status(404)
-        .json(`No heroes found by this difficulty: ${difficulty}`);
-    }
+    return fetchHeroes(res, { difficulty }, req.query.page, req.query.numItems);
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -132,6 +100,7 @@ router.delete("/:id", [isAuth], async (req, res, next) => {
     return next(error);
   }
 });
+
 router.put("/:id", [isAuth], async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -143,5 +112,18 @@ router.put("/:id", [isAuth], async (req, res, next) => {
     return next(error);
   }
 });
+
+const fetchHeroes = async (res, filter, page, numItems) => {
+  const totalHeroes = await Hero.count();
+  const heroes = await Hero.find(filter)
+    .skip(page * numItems)
+    .limit(numItems);
+  const count = heroes.length;
+  if (count > 0) {
+    return res.status(200).json({ count, heroes, totalHeroes });
+  } else {
+    return res.status(404).json(`No heroes found by this filter: ${filter}`);
+  }
+};
 
 export { router as heroRoutes };
