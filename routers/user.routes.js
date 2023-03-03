@@ -37,6 +37,7 @@ userRoutes.post("/register", async (req, res, next) => {
 userRoutes.post("/login", async (req, res, next) => {
   try {
     const { body } = req;
+    console.log(body);
     const user = await User.findOne({ email: body.email });
     const isValidPassword = await bcrypt.compare(
       body.password,
