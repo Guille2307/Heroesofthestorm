@@ -19,6 +19,10 @@ const server = express();
 
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.send("Hello");
+});
+cors;
 server.use(cors({}));
 
 server.use((req, res, next) => {
