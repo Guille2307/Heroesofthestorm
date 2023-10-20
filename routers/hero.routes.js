@@ -70,14 +70,16 @@ router.get("/difficulty/:difficulty", async (req, res) => {
 });
 
 router.post("/", [isAuth], async (req, res, next) => {
+  const { body } = req;
+  console.log(body);
   try {
     const newHero = new Hero({
-      character: req.body.character,
-      role: req.body.role,
-      difficulty: req.body.difficulty,
-      universe: req.body.universe,
-      description: req.body.description,
-      image: req.body.image,
+      character: body.character,
+      role: body.role,
+      difficulty: body.difficulty,
+      universe: body.universe,
+      description: body.description,
+      image: body.image,
     });
     const createdHero = await newHero.save();
     return res.status(201).json(createdHero);

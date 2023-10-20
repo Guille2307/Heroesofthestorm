@@ -12,10 +12,12 @@ import { heroRoutes } from "./routers/hero.routes.js";
 import { battlefieldRoutes } from "./routers/battlefields.Routes.js";
 import { User } from "./models/User.js";
 import { userRoutes } from "./routers/user.routes.js";
-
+import bodyParser from "body-parser";
 // Server
 const PORT = process.env.PORT;
 const server = express();
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
 
 const router = express.Router();
 
@@ -35,8 +37,8 @@ server.use((req, res, next) => {
 //jwt
 server.set("secretKey", process.env.SESSION_SECRET);
 // Middlewares
-server.use(express.json({ limit: "50mb" }));
-server.use(express.urlencoded({ extended: true }));
+// server.use(express.json({ limit: "100mb" }));
+// server.use(express.urlencoded({ extended: true }));
 
 server.use(express.static(path.join(__dirname, "public")));
 //Router

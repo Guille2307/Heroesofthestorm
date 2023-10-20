@@ -8,6 +8,7 @@ const userRoutes = express.Router();
 userRoutes.post("/register", async (req, res, next) => {
   try {
     const { body } = req;
+
     const previousUser = await User.findOne({ email: body.email });
 
     if (previousUser) {
@@ -37,7 +38,7 @@ userRoutes.post("/register", async (req, res, next) => {
 userRoutes.post("/login", async (req, res, next) => {
   try {
     const { body } = req;
-    console.log(body);
+
     const user = await User.findOne({ email: body.email });
     const isValidPassword = await bcrypt.compare(
       body.password,
@@ -82,6 +83,11 @@ userRoutes.post("/logout", async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
+});
+userRoutes.get("/users", async (req, res) => {
+  const user = await User.find();
+
+  res.json({ user });
 });
 
 export { userRoutes };
